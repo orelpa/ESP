@@ -3,7 +3,6 @@
 
 char* host = "10.33.1.147";
 uint16_t port = 5837;
-static bool eth_connected = false;
 const int led = 15;
 const int box = 14;
 const int paper = 12;
@@ -16,11 +15,9 @@ unsigned long last_press_paper;
 
 
 void setup() {
-  pinMode(led, OUTPUT);
   pinMode(box, INPUT_PULLUP);
   pinMode(paper, INPUT_PULLUP);
   Serial.begin(115200);
-  eth_connected = true;  
   ETH.begin();
 }
 
