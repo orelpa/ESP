@@ -1,28 +1,28 @@
 
 #include <ETH.h>
 
-char* host = "10.33.1.147";
-uint16_t port = 5837;
-const int led = 15;
-const int box = 14;
-const int paper = 12;
-int lastState_box = HIGH;
-int currentState_box;
-unsigned long last_press_box;
-int lastState_paper = HIGH;
-int currentState_paper;
-unsigned long last_press_paper;
+char* host = "10.33.1.147"; //адрес сервера
+uint16_t port = 5837; //порт сервера
+
+const int box = 14; // пин реле коробок
+const int paper = 12; // пин реле картона
+int lastState_box = HIGH; // последнее сотояние пина коробок
+int currentState_box; // текущее состояние пина коробок
+unsigned long last_press_box; // время последнего изменения состояния пина коробок милисек
+int lastState_paper = HIGH; // последнее состояние пина картона
+int currentState_paper; // текущее стостояни пина картона
+unsigned long last_press_paper; // время последнего изменения стостояния пина картона в милисек
 
 
 void setup() {
-  pinMode(box, INPUT_PULLUP);
-  pinMode(paper, INPUT_PULLUP);
-  Serial.begin(115200);
-  ETH.begin();
+  pinMode(box, INPUT_PULLUP); // режим работы пина + встроенный подтягивающий резистор
+  pinMode(paper, INPUT_PULLUP);//
+  Serial.begin(115200); // отладка в порт
+  ETH.begin(); // запуск библ ETH
 }
 
 void loop() {
-  currentState_box = digitalRead(box);
+  currentState_box = digitalRead(box); // считываем состояние пинов
   currentState_paper = digitalRead(paper);
   if (lastState_box == LOW && currentState_box == HIGH && millis() - last_press_box > 2000){
     Serial.println("Hello box");
