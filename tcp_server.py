@@ -1,7 +1,14 @@
 from db_class import DB
 import socket
+import configparser
+from bestconfig import Config
 
+confg = Config()
+#Создаём класс БД
 my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
+
+#Созаём класс конфиг
+
 
 
 
@@ -11,7 +18,8 @@ def tcp_server():
                           socket.SOCK_STREAM, # задаём тип передачи данных потоковый (TCP)
                           proto=0) #выбираем протокол по умолчанию для TCP т.е класс socket.socket
 
-    serv_sock.bind(('10.33.1.147', 5837))
+    #serv_sock.bind(('10.33.1.147', 5837))
+    serv_sock.bind((confg['TCP_Server.ip_address'], confg['TCP_Server.port']))
 
 
 #явно переводим сокет в режим ожидания
@@ -24,6 +32,8 @@ def tcp_server():
 
         client_sock, client_addr = serv_sock.accept()
         print('Connected by', client_addr)
+
+
 
         while True:
         #Пока клиент не отклчился, читаем передаваемые
