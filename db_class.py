@@ -70,7 +70,7 @@ class DB:
             )
             last_posted_data = self.cur.fetchone()[0]
 
-        #получение текущей даты
+        return True
 
 
 
@@ -94,7 +94,7 @@ class DB:
                 self.cur.execute(
                     "UPDATE count SET box = box +1"
                 )
-            case "paper":
+            case "paperboard":
                 self.cur.execute(
                     "UPDATE count SET paper = paper +1"
                 )
@@ -103,9 +103,9 @@ class DB:
 
 
 
-my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
+#my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
 
 
-my_bd.check_valid_date()
-my_bd.update("paper")
+#my_bd.check_valid_date()
+#my_bd.update("paper")
 
