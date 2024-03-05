@@ -1,7 +1,8 @@
 from db_class import DB
-import socket
+import socket, threading
+from flask import Flask
 my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
-my_bd.check_valid_date()
+
 
 
 
@@ -39,4 +40,14 @@ def web_server():
         #client_sock.sendall(data)
         client_sock.close()
 
-web_server()
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    return "Helllo, Wordl"
+
+if __name__ == '__main__':
+    t = threading.Thread(target=web_server)
+    t.start()
+    app.run()
+
