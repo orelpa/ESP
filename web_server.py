@@ -28,7 +28,8 @@ def web_server():
         #Пока клиент не отклчился, читаем передаваемые
         #им данные и отправляем их обратно
             data = client_sock.recv(1024).decode('utf-8')
-            my_bd.update(data)
+            if my_bd.check_valid_date():
+                my_bd.update(data)
             print(str(data))
             print(type(data))
             print(str(data))
