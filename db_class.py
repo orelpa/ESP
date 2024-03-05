@@ -1,4 +1,8 @@
 import psycopg2
+import logging
+import time
+logging.basicConfig(level=logging.INFO, filename=('log/' + time.strftime("%d-%m-%Y") +".log"), filemode="w",
+                    format="%(asctime)s %(levelname)s %(message)s")
 
 
 
@@ -13,7 +17,9 @@ class DB:
         self.password = password
         self.host = host
         self.port = port
-
+        self.result_box = {}
+        self.result_paper ={}
+        self.result_all ={}
         #Соединяемся с БД
         self.con = psycopg2.connect(user=self.user, password=self.password, host=self.host, port=self.port)
 
@@ -45,23 +51,33 @@ class DB:
 
     def view_box(self):
         'Просмотр всех значений коробок на текущей дате'
-        result_box= {}
+
         self.cur.execute(
             "SELECT box FROM count WHERE posting_date = NOW()::DATE "
             )
         result = self.cur.fetchone()
-        result_box['box'] = result[0]
-        return result_box
+        self.result_box['box'] = result[0]
+        return self.result_box
 
     def view_paper(self):
         'Просмотр всех значений картона на текущей дате'
-        result_paper= {}
+
         self.cur.execute(
             "SELECT paper FROM count WHERE posting_date = NOW()::DATE "
             )
         result = self.cur.fetchone()
-        result_paper['box'] = result[0]
-        return result_paper
+        self.result_paper['paper'] = result[0]
+        return self.result_paper
+
+    def viev_all(self):
+        "Просмотр записей картона и коробок на текущий день для вывода в веб"
+        self.cur.execute(
+            "SELECT box, paper FROM count WHERE posting_date = NOW()::DATE"
+        )
+        result = self.cur.fetchone()
+        self.result_all['box'] = result[0]
+        self.result_all['paper'] = result[1]
+        return self.result_all
 
 
     def check_valid_date(self):
@@ -113,11 +129,3 @@ class DB:
                 )
 
 
-
-
-
-my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
-
-
-my_bd.check_valid_date()
-print(my_bd.view_box())
