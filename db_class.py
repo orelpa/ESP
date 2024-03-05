@@ -13,25 +13,26 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 class DB:
     'Модель подключения, чтения, записи в БД'
     def __init__(self, user, password, host, port):
-        self.user = user
-        self.password = password
-        self.host = host
-        self.port = port
-        self.result_box = {}
-        self.result_paper ={}
-        self.result_all ={}
-        #Соединяемся с БД
-        self.con = psycopg2.connect(user=self.user, password=self.password, host=self.host, port=self.port)
 
-        # Автоматическое сохранение изменений
-        self.con.autocommit = True
-        #создаём курсор для работы с БД
-        self.cur = self.con.cursor()
+            self.user = user
+            self.password = password
+            self.host = host
+            self.port = port
+            self.result_box = {}
+            self.result_paper ={}
+            self.result_all ={}
+            #Соединяемся с БД
+            self.con = psycopg2.connect(user=self.user, password=self.password, host=self.host, port=self.port)
 
-        #создаём таблицу если её не существует
-        self.cur.execute(
-            "CREATE TABLE IF NOT EXISTS count (id serial PRIMARY KEY, box INTEGER, paper INTEGER, posting_date DATE NOT NULL DEFAULT CURRENT_DATE)"
-        )
+            # Автоматическое сохранение изменений
+            self.con.autocommit = True
+            #создаём курсор для работы с БД
+            self.cur = self.con.cursor()
+
+            #создаём таблицу если её не существует
+            self.cur.execute(
+                "CREATE TABLE IF NOT EXISTS count (id serial PRIMARY KEY, box INTEGER, paper INTEGER, posting_date DATE NOT NULL DEFAULT CURRENT_DATE)"
+            )
 
 
 
