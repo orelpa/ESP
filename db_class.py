@@ -26,9 +26,7 @@ class DB:
         self.cur.execute(
             "CREATE TABLE IF NOT EXISTS count (id serial PRIMARY KEY, box INTEGER, paper INTEGER, posting_date DATE NOT NULL DEFAULT CURRENT_DATE)"
         )
-        #self.cur.execute(
-         #   "INSERT INTO count(box, paper) VALUES ( '0', '0' );"
-        #)
+
 
 
     def insert(self,id, box, paper):
@@ -54,6 +52,17 @@ class DB:
         result = self.cur.fetchone()
         result_box['box'] = result[0]
         return result_box
+
+    def view_paper(self):
+        'Просмотр всех значений картона на текущей дате'
+        result_paper= {}
+        self.cur.execute(
+            "SELECT paper FROM count WHERE posting_date = NOW()::DATE "
+            )
+        result = self.cur.fetchone()
+        result_paper['box'] = result[0]
+        return result_paper
+
 
     def check_valid_date(self):
         #получение последней записи даты
