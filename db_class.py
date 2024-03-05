@@ -1,5 +1,7 @@
 import psycopg2
 
+
+
 msg = "Тестовый принт"
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
@@ -43,13 +45,15 @@ class DB:
 
 
 
-    def view(self):
-        'Просмотр всех значений в БД'
+    def view_box(self):
+        'Просмотр всех значений коробок на текущей дате'
+        result_box= {}
         self.cur.execute(
-            "SELECT * FROM count"
-        )
-        rows = self.cur.fetchall()
-        return rows
+            "SELECT box FROM count WHERE posting_date = NOW()::DATE "
+            )
+        result = self.cur.fetchone()
+        result_box['box'] = result[0]
+        return result_box
 
     def check_valid_date(self):
         #получение последней записи даты
@@ -103,9 +107,8 @@ class DB:
 
 
 
-#my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
+my_bd = DB("postgres", "postgres", "127.0.0.1", "5432")
 
 
-#my_bd.check_valid_date()
-#my_bd.update("paper")
-
+my_bd.check_valid_date()
+print(my_bd.view_box())
